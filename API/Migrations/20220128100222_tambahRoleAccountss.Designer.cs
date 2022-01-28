@@ -4,14 +4,16 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20220128100222_tambahRoleAccountss")]
+    partial class tambahRoleAccountss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,10 +35,15 @@ namespace API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("isUsed")
                         .HasColumnType("bit");
 
                     b.HasKey("NIK");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("TB_M_Account");
                 });
@@ -163,6 +170,10 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Models.Role", null)
+                        .WithMany("AccountRole")
+                        .HasForeignKey("RoleId");
+
                     b.Navigation("Employee");
                 });
 
@@ -175,7 +186,7 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Models.Role", "Role")
-                        .WithMany("AccountRole")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

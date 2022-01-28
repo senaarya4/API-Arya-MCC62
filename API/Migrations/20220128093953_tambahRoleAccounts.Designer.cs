@@ -4,14 +4,16 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20220128093953_tambahRoleAccounts")]
+    partial class tambahRoleAccounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,10 +134,15 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AccountNIK")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("RoleName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RoleId");
+
+                    b.HasIndex("AccountNIK");
 
                     b.ToTable("TB_M_Role");
                 });
@@ -169,13 +176,13 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.AccountRole", b =>
                 {
                     b.HasOne("API.Models.Account", "Account")
-                        .WithMany("AccountRoles")
+                        .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Models.Role", "Role")
-                        .WithMany("AccountRole")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -215,10 +222,17 @@ namespace API.Migrations
                     b.Navigation("Education");
                 });
 
+            modelBuilder.Entity("API.Models.Role", b =>
+                {
+                    b.HasOne("API.Models.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountNIK");
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("API.Models.Account", b =>
                 {
-                    b.Navigation("AccountRoles");
-
                     b.Navigation("Profilling");
                 });
 
@@ -230,11 +244,6 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Employee", b =>
                 {
                     b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("API.Models.Role", b =>
-                {
-                    b.Navigation("AccountRole");
                 });
 
             modelBuilder.Entity("API.Models.University", b =>

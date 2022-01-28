@@ -85,12 +85,14 @@ namespace API.Repository.Data
             var profilings = Context.Profillings;
             var educations = Context.Educations;
             var universities = Context.Universities;
+            //var roles = Context.Role
 
             var result = (from emp in employees
                           join acc in accounts on emp.NIK equals acc.NIK
                           join pro in profilings on acc.NIK equals pro.NIK
                           join edu in educations on pro.EducationId equals edu.Id
                           join univ in universities on edu.UniversityId equals univ.Id
+
 
                           select new
                           {
