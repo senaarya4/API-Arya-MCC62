@@ -14,6 +14,9 @@ namespace API.Models
         [Key]
         public string NIK { get; set; }
         public string Password { get; set; }
+        public int OTP { get; set; }
+        public DateTime ExpiredToken { get; set; }
+        public bool isUsed { get; set; }
 
         [JsonIgnore]
         public virtual Employee Employee { get; set; }

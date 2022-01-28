@@ -2,6 +2,7 @@
 using API.Models;
 using API.Models.ViewModel;
 using API.Repository.Data;
+using API.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -42,6 +43,56 @@ namespace API.Controllers
             else
             {
                 return StatusCode(404, new { status = HttpStatusCode.NotFound, result, message = "No Account Detected!" });
+            }
+        }
+
+        [Route("forget")]
+        [HttpPut]
+
+        public ActionResult SendOTP(RegisterVM registerVM)
+        {
+            var result = accountRepository1.SendOTP(registerVM.Email);
+           
+            if (result == 1)
+            {
+                return StatusCode(200, new { status = HttpStatusCode.OK, result, message = "Email Terkirim!" });
+            }
+            else
+            {
+                return StatusCode(404, new { status = HttpStatusCode.NotFound, result, message = "Email Tidak Ditemukan!" });
+            }
+        }
+
+        [Route("changepass")]
+        [HttpPut]
+
+        public ActionResult<ChgPasswdVM> ChangePass(ChgPasswdVM chgPasswdVM)
+        {
+            var result = accountRepository1.ChgPassword(chgPasswdVM);
+
+            if (result == 1)
+            {
+                return StatusCode(200, new { status = HttpStatusCode.OK, result, message = "Berhasil ubah password!" });
+            }
+            else if (result == 2)
+            {
+                return StatusCode(400, new { status = HttpStatusCode.BadRequest, result, message = "Password Konfirmasi tidak sesuai!" });
+            }
+            else if (result == 3)
+            {
+                return StatusCode(400, new { status = HttpStatusCode.BadRequest, result, message = "OTP sudah dipakai!" });
+            }
+            else if (result == 4)
+            {
+                return StatusCode(400, new { status = HttpStatusCode.BadRequest, result, message = "Kode OTP tidak sesuai!" });
+            }
+            else if (result == 5)
+            {
+                return StatusCode(400, new { status = HttpStatusCode.BadRequest, result, message = "Kode OTP sudah expired!" });
+            }
+            else
+            {
+                return StatusCode(404, new { status = HttpStatusCode.NotFound, result, message = "Email tidak terdaftar!" });
             }
         }
     }
