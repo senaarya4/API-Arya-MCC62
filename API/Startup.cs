@@ -34,6 +34,7 @@ namespace API
             services.AddScoped<Repository.Data.EducationRepository>();
             services.AddScoped<Repository.Data.ProfillingRepository>();
             services.AddScoped<Repository.Data.UniversityRepository>();
+            services.AddScoped<Repository.Data.RoleRepository>();
             services.AddDbContext<MyContext>(options =>
             options
             .UseLazyLoadingProxies()
