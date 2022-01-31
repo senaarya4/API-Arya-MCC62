@@ -61,6 +61,13 @@ namespace API.Repository.Data
                     Context.Profillings.Add(pro);
                     Context.SaveChanges();
 
+                    AccountRole ar = new AccountRole();
+                    ar.AccountId = emp.NIK;
+                    ar.RoleId = 1;
+                    Context.AccountRoles.Add(ar);
+                    Context.SaveChanges();
+
+
                     return 1;
                 }
                 else
@@ -85,10 +92,13 @@ namespace API.Repository.Data
             var profilings = Context.Profillings;
             var educations = Context.Educations;
             var universities = Context.Universities;
-            //var roles = Context.Role
+            var accountrole = Context.AccountRoles;
+            var roles = Context.Roles;
 
             var result = (from emp in employees
                           join acc in accounts on emp.NIK equals acc.NIK
+                          join ar in accountrole on acc.NIK equals ar.AccountId
+                          join r in roles on ar.RoleId equals r.RoleId
                           join pro in profilings on acc.NIK equals pro.NIK
                           join edu in educations on pro.EducationId equals edu.Id
                           join univ in universities on edu.UniversityId equals univ.Id
@@ -103,7 +113,8 @@ namespace API.Repository.Data
                               Email = emp.Email,
                               Degree = edu.Degree,
                               GPA = edu.GPA,
-                              UnivName = univ.Name
+                              UnivName = univ.Name,
+                              RoleName = r.RoleName
                           }).ToList();
 
             return result;
