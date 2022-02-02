@@ -66,5 +66,11 @@ namespace API.Controllers
                 return StatusCode(404, new { status = HttpStatusCode.NotFound, result, message = "Data Tidak Ditemukan" });  //ini kalau datanya harus kosong
             }
         }
+
+        [HttpGet("TestCORS")]
+        public ActionResult TestCORS()
+        {
+            return Ok("Test CORS berhasil!");
+        }
     }
 }

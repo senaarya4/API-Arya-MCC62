@@ -43,6 +43,26 @@ namespace API.Repository.Data
             }
         }
 
+        public int UpManager(RoleVM roleVM)
+        {
+            var checkNik = Context1.Employees.Where(n => n.NIK == roleVM.NIK).FirstOrDefault();
+            if (checkNik != null)
+            {
+                var upman = Context1.AccountRoles.Where(n => n.AccountId == checkNik.NIK).FirstOrDefault();
+                upman.AccountId = checkNik.NIK;
+                upman.RoleId = 2;
+
+                Context1.AccountRoles.Add(upman);
+                Context1.SaveChanges();
+
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public int SendOTP(string email)
         {
             var emp = Context1.Employees.Where(e => e.Email == email).FirstOrDefault();
