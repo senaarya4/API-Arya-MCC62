@@ -1,0 +1,18 @@
+﻿*{
+    border:2px solid #000000;
+    margin:15px;
+    padding:15px;
+}
+
+body{
+    max-width:800px;
+    margin:30px auto;
+}
+
+section#a p:hover{
+    background-color:mediumaquamarine;
+}
+
+section#b li:nth-child(4n+0) {
+    background-color: mediumaquamarine;
+}
